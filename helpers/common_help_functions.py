@@ -25,3 +25,14 @@ def percentile_bin_feature(data, bin_feature, percentiles):
     df[bin_feature + "_bins_percentiles_labels"] = pd.Categorical(df[bin_feature + "_bins_percentiles_labels"], categories=df.sort_values(bin_feature+"_bins_percentiles", ascending=True)[bin_feature + "_bins_percentiles_labels"].unique(), ordered=True)
 
     return df[[bin_feature, bin_feature+"_bins_percentiles", bin_feature+"_bins_percentiles_labels"]]
+
+# -----------------------------------------------------------
+# Transfrom [0,1] to logit space and logit back to [0,1]
+# -----------------------------------------------------------
+def zeroOne_to_logit(value):
+    epsilon = 1e-3 
+    value = np.clip(value, epsilon, 1 - epsilon)  
+    return np.log(value / (1-value))
+
+def logit_to_zeroOne(value):
+    return 1 / (1 + np.exp(-value))
